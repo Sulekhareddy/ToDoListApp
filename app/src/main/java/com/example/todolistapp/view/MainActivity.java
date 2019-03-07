@@ -59,13 +59,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!userName.isEmpty() && !password.isEmpty()) {
                     if (prefIsAlreadyLoggedIn) {
                         if (userName.equals(prefUserName) && password.equals(prefPwd)) {
-                            startToDoListActivity(userName, password);
+                            Intent intent = new Intent(this, ToDoListActivity.class);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         saveUserName(userName, password);
-                        startToDoListActivity(userName, password);
+                        Intent intent = new Intent(this, ToDoListActivity.class);
+                        startActivity(intent);
                     }
                 } else {
                     Toast.makeText(this, "Please enter the login details", Toast.LENGTH_SHORT).show();
@@ -81,18 +83,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        prefUserName = sharedPreferences.getString(PREF_KEY_USERNAME, "");
+        prefPwd = sharedPreferences.getString(PREF_KEY_PWD, "");
+        prefIsAlreadyLoggedIn = sharedPreferences.getBoolean(PREF_KEY_USER_LOGGED_IN, false);
+    }
+
     private void saveUserName(String userName, String password) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PREF_KEY_USERNAME, userName);
         editor.putString(PREF_KEY_PWD, password);
         editor.putBoolean(PREF_KEY_USER_LOGGED_IN, true);
         editor.apply();
-    }
-
-    private void startToDoListActivity(String userName, String password) {
-        Intent intent = new Intent(this, ToDoListActivity.class);
-        startActivity(intent);
-
     }
 
 }

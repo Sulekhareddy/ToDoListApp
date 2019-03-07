@@ -21,6 +21,7 @@ public class ToDoListActivity extends AppCompatActivity implements OnItemClicked
 
     private EditText toDoList_EditText;
     private Button addButton;
+    private Button resetButton;
 
     private RecyclerView recyclerView;
     private ToDoListAdapter adapter;
@@ -34,6 +35,7 @@ public class ToDoListActivity extends AppCompatActivity implements OnItemClicked
 
         toDoList_EditText = findViewById(R.id.list_editText);
         addButton = findViewById(R.id.add_button);
+        resetButton = findViewById(R.id.reset_button);
 
         recyclerView = findViewById(R.id.recyclerview);
         adapter = new ToDoListAdapter();
@@ -49,13 +51,24 @@ public class ToDoListActivity extends AppCompatActivity implements OnItemClicked
             public void onClick(View v) {
                 String toDoItemsData = toDoList_EditText.getText().toString();
                 if(!toDoItemsData.isEmpty()){
-                    toDOList.add(new ToDoItem(toDoItemsData));
-                    adapter.notifyDataSetChanged();
+                    int topPos = 0;
+                    toDOList.add(topPos, new ToDoItem(toDoItemsData));
+                    adapter.notifyItemInserted(topPos);
+                    recyclerView.scrollToPosition(topPos);
                 }else{
                     Toast.makeText(ToDoListActivity.this, "Please enter ToDo", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toDoList_EditText.setText("");
+            }
+        });
+
+
     }
 
     @Override

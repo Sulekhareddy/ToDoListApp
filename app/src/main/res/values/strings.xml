@@ -10,4 +10,5 @@
     <string name="password">Password :</string>
     <string name="add_button">ADD</string>
     <string name="todo">TODO : </string>
+    <string name="reset_button">RESET</string>
 </resources>
